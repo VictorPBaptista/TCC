@@ -1,5 +1,3 @@
-Package              Version
--------------------- -------
 Brotli               1.0.9
 click                8.1.2
 colorama             0.4.4
