@@ -1,2 +1,2 @@
 web: gunicorn 
-app:server
+myDash:server
