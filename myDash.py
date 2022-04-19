@@ -1,6 +1,7 @@
 import base64
 import datetime
 import io
+import gunicorn
 
 from curve_fit import fit_to_model
 from dash import Dash, html, dcc, dash_table
