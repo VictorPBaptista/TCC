@@ -1,2 +1,1 @@
-web: gunicorn 
-myDash:server
+web: gunicorn myDash:server
