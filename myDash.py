@@ -10,7 +10,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 import pandas as pd
 
-app = Dash(__name__)
+app = Dash(__name__,suppress_callback_exceptions=True)
 
 server = app.server
 
@@ -37,14 +37,7 @@ app.layout = html.Div(
     )
     ]),
     dcc.Store(id='user_data'),
-    html.Div(id='output-data-upload'),
-
-    html.Div(id = 'download-container',
-        children = [
-            html.Button("Download CSV", id="btn_csv", disabled=True),
-            dcc.Download(id="download-dataframe-csv"),
-        ]
-    ),    
+    html.Div(id='output-data-upload'),    
 
 ])
 
@@ -69,17 +62,6 @@ def get_results(df, filename, date):
     
         
     return html.Div(children=[
-        html.Div(
-            id='data-loaded', 
-            children=[
-            html.H4('Dados recebidos'),
-            html.H5(filename),
-            html.H6(datetime.datetime.fromtimestamp(date)),
-            dash_table.DataTable(
-                df.to_dict('records'),
-                [{'name': i, 'id': i} for i in df.columns]
-            ),
-        ]),
 
         html.Div(
             id='graph-result',
@@ -90,14 +72,29 @@ def get_results(df, filename, date):
             ),
         ]),
 
-        html.Div(
-            id='table-of-results',
-            children=[
-            dash_table.DataTable(
-                df_results.to_dict('records'),
-                [{'name': i, 'id': i} for i in df_results.columns]
-            ),
-        ]),
+        html.Div(id = 'results-container',
+            children = [
+                html.Div(
+                    id='data-loaded', 
+                    children=[
+                    html.H2('Dados recebidos'),
+                    html.H3(filename),
+                    html.H5(datetime.datetime.fromtimestamp(date)),
+                    ]
+                ),
+                html.Div(
+                    id='table-of-results',
+                    children=[
+                        dash_table.DataTable(
+                            df_results.to_dict('records'),
+                            [{'name': i, 'id': i} for i in df_results.columns]
+                        ),
+                    ]
+                ),
+                html.Button("Download CSV", id="btn_csv"),
+                dcc.Download(id="download-dataframe-csv"),
+            ]
+        ),
 
     ])
 
@@ -148,10 +145,6 @@ def update_output(data):
     df = pd.read_json(data_frame, orient='split')
     children = get_results(df, f, d)
     return children
-
-@app.callback(Output("btn_csv", "disabled"),Input("output-data-upload", "children"), prevent_initial_call =True)
-def update_output(children):
-    return False
 
 @app.callback(
     Output("download-dataframe-csv", "data"),

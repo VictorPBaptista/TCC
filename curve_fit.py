@@ -52,7 +52,7 @@ def fit_to_model(df, column1, column2):
     #table of contents
     df_results = pd.DataFrame({
                 "Coeficientes e Erros":["a","b","k","RMSE","Rsquared"],
-                "Valores":[round(a,4),round(b,4),round(k,4),RMSE,Rsquared]
+                "Valores":[round(a,4),round(b,4),round(k,4),round(RMSE,4),round(Rsquared,4)]
                 }) 
     
     return df_results, df_line
