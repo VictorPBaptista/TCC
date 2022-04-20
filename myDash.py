@@ -115,7 +115,10 @@ def parse_contents(contents, filename, date):
                 )
         elif 'xls' in filename:
             # Assume that the user uploaded an excel file
-            df = pd.read_excel(io.BytesIO(decoded))
+            df = pd.read_excel(
+                io.BytesIO(decoded),
+                decimal=','
+                )
     except Exception as e:
         print(e)
         return html.Div([
