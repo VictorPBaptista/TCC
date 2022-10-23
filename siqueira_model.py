@@ -30,38 +30,37 @@ def generate_Initial_Parameters(xData, yData):
 def siqueira_fit(df, x_column, y_column):
     xData, yData = df[x_column], df[y_column]
 
-    try:
-        # generate initial parameter values
-        geneticParameters = generate_Initial_Parameters(xData, yData)
-        
-        # curve fit and results
-        popt, pcov = curve_fit(siqueira, xData, yData, p0=geneticParameters, maxfev=1000)
-        
-        #results
-        modelPredictions = siqueira(xData, *popt) 
-        absError = modelPredictions - yData 
+    # generate initial parameter values
+    geneticParameters = generate_Initial_Parameters(xData, yData)
+    
+    # curve fit and results
+    popt, pcov = curve_fit(siqueira, xData, yData, p0=geneticParameters, maxfev=1000)
+    
+    #results
+    modelPredictions = siqueira(xData, *popt) 
+    absError = modelPredictions - yData 
 
-        SE = np.square(absError) # squared errors
-        MSE = np.mean(SE) # mean squared errors
-        RMSE = np.sqrt(MSE) # Root Mean Squared Error, RMSE
-        Rsquared = 1.0 - (np.var(absError) / np.var(yData))
+    SE = np.square(absError) # squared errors
+    MSE = np.mean(SE) # mean squared errors
+    RMSE = np.sqrt(MSE) # Root Mean Squared Error, RMSE
+    Rsquared = 1.0 - (np.var(absError) / np.var(yData))
 
-        #df for plotting results in dash
-        df_line = pd.DataFrame({
-            "line_x": np.linspace(df[x_column].min(),df[x_column].max(), num=1000),
-            "line_y": siqueira(np.linspace(df[x_column].min(),df[x_column].max(), num=1000),*popt)
-        })
-        
-        #table of contents
-        df_results = pd.DataFrame({
-                    "Coeficientes e Erros":["a","b","k","RMSE","Rsquared"],
-                    "Valores":[round(popt[0],4),round(popt[1],4),round(popt[2],4),round(RMSE,4),round(Rsquared,4)]
-                    }) 
-    except:
-        df_line = pd.DataFrame({'line_x':[], 'line_y':[]})
-        df_results = pd.DataFrame({
-            "Coeficientes e Erros":["Ocorreu um erro"],
-            "Valores":["Não foi possível ajustar"]
-            }) 
+    #df for plotting results in dash
+    df_line = pd.DataFrame({
+        "line_x": np.linspace(df[x_column].min(),df[x_column].max(), num=1000),
+        "line_y": siqueira(np.linspace(df[x_column].min(),df[x_column].max(), num=1000),*popt)
+    })
+    
+    #table of contents
+    df_results = pd.DataFrame({
+                "Coeficientes e Erros":["a","b","k","RMSE","Rsquared"],
+                "Valores":[round(popt[0],4),round(popt[1],4),round(popt[2],4),round(RMSE,4),round(Rsquared,4)]
+                }) 
+                
+    df_line = pd.DataFrame({'line_x':[], 'line_y':[]})
+    df_results = pd.DataFrame({
+        "Coeficientes e Erros":["Ocorreu um erro"],
+        "Valores":["Não foi possível ajustar"]
+        }) 
 
     return df_results, df_line
