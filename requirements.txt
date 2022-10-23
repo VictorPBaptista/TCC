@@ -1,7 +1,7 @@
 Brotli==1.0.9
 click==8.1.2
 colorama==0.4.4
-dash==2.3.1
+dash==2.6.1
 dash-core-components==2.0.0
 dash-html-components==2.0.0
 dash-table==5.0.0
@@ -12,6 +12,7 @@ gunicorn==20.1.0
 importlib-metadata==4.11.3
 itsdangerous==2.1.2
 Jinja2==3.1.1
+joblib==1.1.0
 MarkupSafe==2.1.1
 numpy==1.22.3
 openpyxl==3.0.9
@@ -19,8 +20,11 @@ pandas==1.4.2
 plotly==5.7.0
 python-dateutil==2.8.2
 pytz==2022.1
+scikit-learn==1.1.2
 scipy==1.8.0
 six==1.16.0
+sklearn==0.0
 tenacity==8.0.1
+threadpoolctl==3.1.0
 Werkzeug==2.1.1
 zipp==3.8.0

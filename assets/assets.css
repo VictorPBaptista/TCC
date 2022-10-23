@@ -1,6 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+/*
+###################################################
+##########      General assets         ############
+###################################################
+*/
+
 body{
     background-color: #F6F6F6;
-    font-family: "Trebuchet MS", "Helvetica", "sans-serif";
+    font-family: "Poppins", "sans-serif";
     font-size: 16px;
     letter-spacing: 2px;
     word-spacing: 2px;
@@ -19,19 +27,29 @@ body{
     color: #2d4059;
     padding-top: 10px;
     padding-bottom: 10px;
-    background-color: #6200ee;
+    background-color: #1800ee;
     color: #ffffff;
 }
 
 #title{
-    padding-top: 10px;
-    padding-bottom: 10px;
-    padding-left: 30px;
-    padding-right: 10px;
+    margin-left: 5%;
+    padding: 10px 10px 10px 10px;
 }
 
-#upload-container{
-    width: 96%;
+.small-paragraph-for-info{
+    margin-left: 5%;
+    margin-right: 5%;
+    font-size: smaller;
+}
+.small-paragraph-for-info-bold{
+    margin-left: 5%;
+    margin-right: 5%;
+    font-size: smaller;
+    font-weight: bold;
+}
+
+.data-table-container{
+    width: 30%;
     padding: 10px 10px 10px 10px;
     background-color: #ffffff;
     color: #000000;
@@ -41,13 +59,47 @@ body{
     border-radius: 5px;
     margin-top: 10px;
     margin-bottom: 10px;
-    margin-left: 2%;
-    margin-right: 2%;
-    text-align: justify;
+    margin-left: 5%;
+    float: inline-start;
+}
+
+/*
+###################################################
+##########      Modeling components     ###########
+###################################################
+*/
+
+#upload-data-container{
+    float: left;
+    width: 40%;
+    height: 300px;
+    padding: 10px 10px 10px 10px;
+    background-color: #ffffff;
+    color: #000000;
+    -webkit-box-shadow: 0px 4px 8px 0px rgba(99,99,99,0.49); 
+    box-shadow: 0px 4px 8px 0px rgba(99,99,99,0.49);
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 5%;
+    /* text-align: justify;*/
+}
+
+#upload-data-container-title{
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+#upload-data-container-description{
+    margin-left: 5%;
+    margin-right: 5%;
 }
 
 #upload-data{
     height: 60px;
+    margin-left: 5%;
+    margin-right: 5%;
     padding-top: 10px;
     padding-bottom: 10px;
     padding-left: 10px;
@@ -64,10 +116,28 @@ body{
     cursor: pointer;
 }
 
-#output-data-upload{
+#output-data-uploaded{
     background-color: #F6F6F6;
 
 }
+
+#choose-model-options{
+    padding: 10px 10px 10px 10px;
+    margin-left: 5%;
+}
+
+#choose-model-label{
+    float: inline-start ;
+    padding: 10px 10px 10px 10px;
+    margin-top: 10px;
+}
+
+.btn-modeling-opt{
+    padding: 10px 10px 10px 10px;
+    margin-left: 5px;    
+}
+
+
 #graph-result{
     width: 50%;
     padding: 10px 10px 10px 10px;
@@ -79,30 +149,29 @@ body{
     border-radius: 5px;
     margin-top: 10px;
     margin-bottom: 10px;
-    margin-left: 2%;
-    float: left;
+    margin-right: 5%;
+    float: right;
 }
 
 #data-loaded{
-    width: 100%;
+    width: 90%;
     padding: 10px 10px 10px 10px;
-    background-color: #ffffff;
-    color: #000000;
-    -webkit-box-shadow: 0px 4px 8px 0px rgba(99,99,99,0.49); 
-    box-shadow: 0px 4px 8px 0px rgba(99,99,99,0.49);
-    -webkit-border-radius: 5px;
-    border-radius: 5px;
-    margin-top: 10px;
-    margin-bottom: 10px;
 }
 
-#results-container{
-    width: 40%;
-    margin-right: 2%;
-    float:right;
-}
 #table-of-results{
-    width: 100%;
+    width: 90%;
+    padding: 10px 10px 10px 10px;
+}
+
+/*
+###################################################
+########## Working with img components ############
+###################################################
+*/
+#upload-img-container{
+    float: right;
+    width: 40%;
+    height: 300px;
     padding: 10px 10px 10px 10px;
     background-color: #ffffff;
     color: #000000;
@@ -112,31 +181,51 @@ body{
     border-radius: 5px;
     margin-top: 10px;
     margin-bottom: 10px;
-
+    margin-right: 5%;
+    /* text-align: justify;*/
 }
-#btn_csv {
-    width: 100%;
-    color: #000000; 
-    font-size: 20px; 
-    line-height: 20px;
-    padding: 16px 10px 16px 10px;
-    border-radius: 5px; 
-    font-weight: normal; 
-    text-decoration: none; 
-    font-style: normal; 
-    font-variant: normal; 
-    text-transform: none; 
-    background-color: #03dac5;
-    border: 2px solid #03dac5; 
+
+#upload-img-container-title{
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+#upload-img-container-description{
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+#upload-img{
+    margin-left: 5%;
+    margin-right: 5%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    line-height: 60px;
+    border-width: 1px;
+    border-style: dashed;
+    border-radius: 5px;
+    border-color: #03dac5;
+    text-align: center;
+    color: #03dac5;
+}
+#upload-img:hover{
+    cursor: pointer;
+}
+
+#img-on-axes-result{
+    width: fit-content;
+    height: fill;
+    padding: 10px 10px 10px 10px;
+    background-color: #ffffff;
+    color: #000000;
+    -webkit-box-shadow: 0px 4px 8px 0px rgba(99,99,99,0.49); 
+    box-shadow: 0px 4px 8px 0px rgba(99,99,99,0.49);
+    -webkit-border-radius: 5px;
     border-radius: 5px;
     margin-top: 10px;
     margin-bottom: 10px;
-    margin-left: 2%;
-}
-#btn_csv:hover {
-    background: #03f3db; }
-#btn_csv:active {
-    background: #144E75; }
-#btn_csv:disabled{
-    display: none;
+    margin-right: 5%;
+    float: right;
 }
