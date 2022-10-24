@@ -56,11 +56,5 @@ def siqueira_fit(df, x_column, y_column):
                 "Coeficientes e Erros":["a","b","k","RMSE","Rsquared"],
                 "Valores":[round(popt[0],4),round(popt[1],4),round(popt[2],4),round(RMSE,4),round(Rsquared,4)]
                 }) 
-                
-    df_line = pd.DataFrame({'line_x':[], 'line_y':[]})
-    df_results = pd.DataFrame({
-        "Coeficientes e Erros":["Ocorreu um erro"],
-        "Valores":["Não foi possível ajustar"]
-        }) 
 
     return df_results, df_line
