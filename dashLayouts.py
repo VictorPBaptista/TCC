@@ -207,11 +207,13 @@ def plot_image_on_axes(contents):
             className = "data-table-container",
             children = [
                 html.H2('  Primeiro passo'),
-                html.P('1) Na primeira linha da tabela abaixo, digite o ponto onde os eixos X e Y se cruzam. Você deve na célula da tabela para digitar.', className = "small-paragraph-for-info"),
+                html.P('1) Na primeira linha da tabela abaixo, digite o ponto onde os eixos X e Y se cruzam. Você deve clicar na célula da tabela para digitar.', className = "small-paragraph-for-info"),
                 html.P('2) Na segunda linha, digite os valores máximos do eixo X e do eixo Y.', className = "small-paragraph-for-info"),
                 html.P('3) Clique onde os eixos se cruzam, na imagem do gráfico', className = "small-paragraph-for-info-bold"),
                 html.P('4) Clique no valor máximo do eixo X', className = "small-paragraph-for-info-bold"),
                 html.P('5) Clique no valor máximo do eixo Y', className = "small-paragraph-for-info-bold"),
+                html.P('', className = "small-paragraph-for-info"),
+                html.P('Quando terminar, clique no botão continuar. Certifique-se que completar os passos de 3 a 5.', className = "small-paragraph-for-info"),
                 dash_table.DataTable(
                     id='user-graph-param-input',
                     columns=[{
@@ -224,7 +226,6 @@ def plot_image_on_axes(contents):
                     editable=True,
                     row_deletable=True
                 ),
-                html.P('Quando terminar, clique no botão continuar. Certifique-se que completar os passos de 3 a 5.', className = "small-paragraph-for-info"),
                 html.Div(id = 'continue-btn-container', children=[ html.Button('Continuar', id = 'show-step-two-btn') ])
             ]
         ),
@@ -239,18 +240,6 @@ def get_step_two_elements():
                 html.H2(''),
                 html.H2("Segundo passo"),
                 html.P("Clique nos pontos do gráfico. Você pode exportar os dados quando terminar", className = "small-paragraph-for-info"),
-                dash_table.DataTable(
-                    id='adding-img-results-table',
-                    columns=[{
-                        'name': f'{c}',
-                        'id': f'{i}',
-                        #'deletable': True,
-                        'renamable': True
-                    } for i,c in [('click-x','x'),('click-y','y')]],
-                    data=[],
-                    editable=True,
-                    row_deletable=True
-                ),
                 dash_table.DataTable(
                     id='transform-results-data-table',
                     columns=[{

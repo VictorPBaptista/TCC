@@ -154,9 +154,13 @@ def step_one_click_event(clickData, children, rows, columns):
               prevent_initial_call = True)
 def get_user_graph_input_data(n_clicks, rows):
     temp_d = {'x':[],'y':[]}
+    
+    counter = 0
     for row in rows:
+        counter+=1
         temp_d['x'].append(row['x'])
         temp_d['y'].append(row['y'])
+
     return pd.DataFrame(temp_d).to_json(date_format='iso', orient='split')
 
 #2.3.1) Remove Step One Layout
@@ -177,24 +181,18 @@ def remove_step_one_layout(data, children):
 def show_step_two(n_clicks):
     return dl.get_step_two_elements()
 
-#2.4) Step two on getting experimental data: getting click event coordinates
-@app.callback(Output('adding-img-results-table', 'data'),
-              Input("user-img", "clickData"),
-              State('adding-img-results-table', 'data'),
-              State('adding-img-results-table', 'columns'),
-              prevent_initial_call = True)
-def step_two_click_envent(clickData, rows, columns):
-    if not clickData:
-        raise PreventUpdate
-    rows.append({c['id']: r for c,r in zip(columns,[ round(clickData["points"][0]['x'], 3), round(clickData["points"][0]['y'], 3) ])})
-    return rows
-
-#2.4.1) Transform click event coordinates data
+#2.4) Transform click event coordinates data
 @app.callback(Output('transform-results-data-table', 'data'),
-              Input('adding-img-results-table', 'data'),
+              Input("user-img", "clickData"),
+              State('transform-results-data-table', 'data'),
+              State('transform-results-data-table', 'columns'),
               State('user_graph_param_data', 'data'),
               prevent_initial_call = True)
-def transform_data(rows, step_one_data):
+def transform_data(clickData, rows, columns, step_one_data):
+    #Append new row in table with user click event
+    if not clickData:
+        raise PreventUpdate
+    
     df = pd.read_json(step_one_data, orient='split')
     x_column, y_column = list(df.columns)
     
@@ -207,12 +205,15 @@ def transform_data(rows, step_one_data):
     x_divide_factor = x_max_distance/df[x_column][1]
     y_divide_factor = y_max_distance/df[y_column][1]
     
-    for row in rows:
-        try:
-            row['transf-x'] = round( (row['click-x']-x_min_distance)/x_divide_factor, 3)
-            row['transf-y'] = round( (row['click-y']-y_min_distance)/y_divide_factor, 3) 
-        except:
-            continue
+    rows.append({
+        c['id']: r for c,r in zip(
+            columns,
+            [
+                round((clickData["points"][0]['x']-x_min_distance)/x_divide_factor, 3), 
+                round((clickData["points"][0]['y']-y_min_distance)/y_divide_factor, 3)
+            ]
+        )
+    })
     return rows
 
 
