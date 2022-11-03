@@ -218,4 +218,4 @@ def transform_data(clickData, rows, columns, step_one_data):
 
 
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    app.run_server(debug=False)
