@@ -14,8 +14,7 @@ app = Dash(__name__,suppress_callback_exceptions=True)
 
 server = app.server
 
-dash_layout = dl.initial_layout
-app.layout = dash_layout
+app.layout = dl.initial_layout
 
 ###############################################
 ##    Function to parse Input Contents       ##
@@ -61,7 +60,9 @@ def clear_input_container(modeling_options_children, img_children):
     empty_children = []
     return empty_children
 
+#     ----------------------------------
 #1.0) ------> Modeling CallBacks <------
+#     ----------------------------------
 
 #1.1) Upload data and parse content into json object
 @app.callback(Output('user_modeling_data', 'data'),
@@ -118,9 +119,12 @@ def update_output(btn1, btn2, btn3, btn4, btn5, data):
         children = dl.get_data_results(df, f, d, model = 'Y(x) = bxª')
     return children
 
-#2.0) Working with Image CallBacks
+#     --------------------------------------------
+#2.0) ------> Working with Image CallBacks <------
+#     --------------------------------------------
 
-#2.1) Show step one on getting experimental data: image on figure object and axis coordinates
+#   SETP 1 - USER INPUT: user must type X0, Xmax and Y0, Ymax
+#2.1) Plot image on figure object
 @app.callback(Output('output-img-uploaded', 'children'),
               Input('upload-img', 'contents'),
               prevent_initial_call = True)
@@ -131,25 +135,52 @@ def update_image_output(list_of_contents):
         ]
         return children
 
-#2.2) Step one on getting experimental data: getting click event coordinates
+#2.1.1) Delete Step 1 instructions
+@app.callback(Output('step1', 'children'),
+              Input('show-step-two-btn', 'n_clicks'),
+              prevent_initial_call = True)
+def delete_step_one(n_clicks):
+    empty_children = []
+    return empty_children
+
+#2.1.2) Step1 - Show completed status
+@app.callback(Output('step1-concluded-status', 'children'),
+              Input('show-step-two-btn', 'n_clicks'),
+              prevent_initial_call = True)
+def show_step1_status_completed(n_clicks):
+    return dl.step_one_concluded()
+
+#2.1.3) Show Step 2 instructions
+@app.callback(Output('step2', 'children'),
+              Input('show-step-two-btn', 'n_clicks'),
+              prevent_initial_call = True)
+def show_step_two(n_clicks):
+    return dl.get_step_two()
+
+#2.1.4) Step2 - Remove previous Div with user tip
+@app.callback(Output('step2-gui-user-tip', 'children'),
+              Input('show-step-two-btn', 'n_clicks'),
+              prevent_initial_call = True)
+def remove_previous_step2_tip(n_clicks):
+    return []
+
+
+#   SETP 2 - USER INPUT: Click event for getting data from image
+#2.2) Step 2 - Setting Callback for click event: use this to get Img data
 @app.callback(Output('user-graph-param-input', 'data'),
               Input('user-img', "clickData"),
-              State('continue-btn-container','children'),
               State('user-graph-param-input', 'data'),
               State('user-graph-param-input', 'columns'),
               prevent_initial_call = True)
-def step_one_click_event(clickData, children, rows, columns):
-    if children != []:
-        if not clickData:
-            raise PreventUpdate
-        rows.append({c['id']: r for c,r in zip(columns,[ round(clickData["points"][0]['x'], 3), round(clickData["points"][0]['y'], 3) ])})
-        return rows
-    else:
-        pass
+def step_one_click_event(clickData, rows, columns):
+    if not clickData:
+        raise PreventUpdate
+    rows.append({c['id']: r for c,r in zip(columns,[ round(clickData["points"][0]['x'], 3), round(clickData["points"][0]['y'], 3) ])})
+    return rows
 
-#2.3.0) Save user input into json object
+#2.2.1) Save user inputs into json object
 @app.callback(Output('user_graph_param_data', 'data'),
-              Input("show-step-two-btn", "n_clicks"),
+              Input("show-step-three-btn", "n_clicks"),
               State('user-graph-param-input', 'data'),
               prevent_initial_call = True)
 def get_user_graph_input_data(n_clicks, rows):
@@ -163,25 +194,36 @@ def get_user_graph_input_data(n_clicks, rows):
 
     return pd.DataFrame(temp_d).to_json(date_format='iso', orient='split')
 
-#2.3.1) Remove Step One Layout
-@app.callback(Output('img-axis-coordinates-input', 'children'),
-              Input('user_graph_param_data', 'data'),
-              State('img-results-container', 'children'),
+#2.2.2) Delete Step 2 instructions
+@app.callback(Output('step2-elements-container', 'children'),
+              Input('show-step-three-btn', 'n_clicks'),
               prevent_initial_call = True)
-def remove_step_one_layout(data, children):
-    if len(children) < 2:
-        return dl.step_one_concluded()
-    else:
-        pass
+def delete_step_two(n_clicks):
+    return dl.step_two_concluded()
 
-#2.3.2) Show step two html elements on getting experimental data
+#2.2.3) Show Step 3 instructions
 @app.callback(Output('img-results-container', 'children'),
-              Input("show-step-two-btn", "n_clicks"),
+              Input('show-step-three-btn', 'n_clicks'),
               prevent_initial_call = True)
-def show_step_two(n_clicks):
-    return dl.get_step_two_elements()
+def show_step_three(n_clicks):
+    if not n_clicks:
+        raise PreventUpdate
+    else:
+        return dl.get_step_three()
 
-#2.4) Transform click event coordinates data
+#2.2.4) Delete Data Table container
+@app.callback(Output('inputs-data-table', 'children'),
+              Input('show-step-three-btn', 'n_clicks'),
+              prevent_initial_call = True)
+def delete_step_two(n_clicks):
+    if not n_clicks:
+        raise PreventUpdate
+    else:
+        return []
+
+
+#   SETP 3 - CALCULATE EXPERIMENTAL DATA: calculate experimental data by user click evente and export results
+#2.3) Transform click event coordinates data
 @app.callback(Output('transform-results-data-table', 'data'),
               Input("user-img", "clickData"),
               State('transform-results-data-table', 'data'),
@@ -216,6 +258,5 @@ def transform_data(clickData, rows, columns, step_one_data):
     })
     return rows
 
-
 if __name__ == '__main__':
-    app.run_server(debug=False)
+    app.run_server(debug=True)

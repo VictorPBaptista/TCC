@@ -202,44 +202,81 @@ def plot_image_on_axes(contents):
                 figure=fig
             )
         ]),
+        # User Inputs
+        html.Div(id='step1-concluded-status',children=[]),
         html.Div(
             id = 'img-axis-coordinates-input',
             className = "data-table-container",
             children = [
-                html.H2('  Primeiro passo'),
-                html.P('1) Na primeira linha da tabela abaixo, digite o ponto onde os eixos X e Y se cruzam. Você deve clicar na célula da tabela para digitar.', className = "small-paragraph-for-info"),
-                html.P('2) Na segunda linha, digite os valores máximos do eixo X e do eixo Y.', className = "small-paragraph-for-info"),
-                html.P('3) Clique onde os eixos se cruzam, na imagem do gráfico', className = "small-paragraph-for-info-bold"),
-                html.P('4) Clique no valor máximo do eixo X', className = "small-paragraph-for-info-bold"),
-                html.P('5) Clique no valor máximo do eixo Y', className = "small-paragraph-for-info-bold"),
-                html.P('', className = "small-paragraph-for-info"),
-                html.P('Quando terminar, clique no botão continuar. Certifique-se que completar os passos de 3 a 5.', className = "small-paragraph-for-info"),
-                dash_table.DataTable(
-                    id='user-graph-param-input',
-                    columns=[{
-                        'name': f'{c}',
-                        'id': f'{i}',
-                        #'deletable': True,
-                        'renamable': True
-                    } for i,c in [('x','X0 e Xmax'),('y','Y0 e Ymax')]],
-                    data=[{"x":"","y":""},{"x":"","y":""}],
-                    editable=True,
-                    row_deletable=True
-                ),
-                html.Div(id = 'continue-btn-container', children=[ html.Button('Continuar', id = 'show-step-two-btn') ])
+            #Step 1 
+                html.Div(id='step1',children=[
+                    html.Div(children = [html.H2('Primeiro passo')]),
+                    html.Div(children = [
+                        html.P('1) Na primeira linha da tabela abaixo, digite o ponto onde os eixos X e Y se cruzam. Você deve clicar na célula da tabela para digitar.', className = "small-paragraph-for-info"),
+                        html.P('2) Na segunda linha, digite os valores máximos do eixo X e do eixo Y.', className = "small-paragraph-for-info"),
+                    ]),
+                #Show Step2 Button
+                html.Div(id = 'step1-continue-btn-container', children=[ html.Button('Continuar', id = 'show-step-two-btn') ])
+                ]),
+            #Step 2
+                html.Div(id='step2', children=[]),
+            
+            #Dash DataTable
+                html.Div(id='inputs-data-table', children=[
+                    dash_table.DataTable(
+                        id='user-graph-param-input',
+                        columns=[{
+                            'name': f'{c}',
+                            'id': f'{i}',
+                            #'deletable': True,
+                            'renamable': True
+                        } for i,c in [('x','X0 e Xmax'),('y','Y0 e Ymax')]],
+                        data=[{"x":"","y":""},{"x":"","y":""}],
+                        editable=True,
+                        row_deletable=True
+                    )
+                ])
             ]
         ),
-        html.Div(id = 'img-results-container', className = "data-table-container", children=[html.H3("Segundo passo")])
+        #Step 2 - let user know there is a step 2
+        html.Div(
+            id='step2-gui-user-tip',
+            children=[
+                html.Div(className = "data-table-container", children=[html.H3("Segundo passo")])
+            ]
+        ),
+        #Step 3 - let user know there is a step 3
+        html.Div(id = 'img-results-container', className = "data-table-container", children=[html.H3("Terceiro passo")])
     ])
 
 def step_one_concluded():
-    return html.H3('Primeiro passo concluído')
+    return html.Div(
+        className='data-table-container',
+        children=[html.H3('Primeiro passo concluído', className ='img-step-status-concluded')]
+    )
 
-def get_step_two_elements():
+def get_step_two():
+    return html.Div(id='step2-elements-container',children=[
+        html.Div(children = [html.H2('Segundo passo')]),
+        html.Div(children = [
+            html.P('1) Clique onde os eixos se cruzam, na imagem do gráfico', className = "small-paragraph-for-info-bold"),
+            html.P('2) Clique no valor máximo do eixo X', className = "small-paragraph-for-info-bold"),
+            html.P('3) Clique no valor máximo do eixo Y', className = "small-paragraph-for-info-bold"),
+            html.P('', className = "small-paragraph-for-info"),
+            html.P('Quando terminar, clique no botão continuar.', className = "small-paragraph-for-info"),
+            html.Div(id = 'step2-continue-btn-container', children=[ html.Button('Continuar', id = 'show-step-three-btn') ])
+        ])
+    ])
+
+def step_two_concluded():
+    return html.H3('Segundo passo concluído', className ='img-step-status-concluded')
+
+def get_step_three():
     return  [
                 html.H2(''),
-                html.H2("Segundo passo"),
-                html.P("Clique nos pontos do gráfico. Você pode exportar os dados quando terminar", className = "small-paragraph-for-info"),
+                html.H2("Terceiro passo"),
+                html.P("Pronto! Basta clicar nos pontos do gráfico para obter os pontos experimentais.", className = "small-paragraph-for-info"),
+                html.P("Você pode exportar os dados para excel quando terminar", className = "small-paragraph-for-info"),
                 dash_table.DataTable(
                     id='transform-results-data-table',
                     columns=[{
