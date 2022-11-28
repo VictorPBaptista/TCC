@@ -24,7 +24,7 @@ def generate_Initial_Parameters(xData, yData):
     parameterBounds.append([0,1]) # search bounds for k
 
     # "seed" the numpy random number generator for repeatable results
-    result = differential_evolution(sumOfSquaredError, parameterBounds, args=(xData, yData), seed=0)
+    result = differential_evolution(sumOfSquaredError, parameterBounds, args=(xData, yData), seed=0, maxiter=100)
     return result.x
 
 def siqueira_fit(df, x_column, y_column):
