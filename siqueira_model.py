@@ -34,7 +34,7 @@ def siqueira_fit(df, x_column, y_column):
     geneticParameters = generate_Initial_Parameters(xData, yData)
     
     # curve fit and results
-    popt, pcov = curve_fit(siqueira, xData, yData, p0=geneticParameters, maxfev=1000)
+    popt, pcov = curve_fit(siqueira, xData, yData, p0=geneticParameters, maxfev=100)
     
     #results
     modelPredictions = siqueira(xData, *popt) 
