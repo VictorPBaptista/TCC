@@ -57,13 +57,11 @@ def siqueira_fit(df, x_column, y_column):
     # tabulating data for showing result in dash app
     coefs_and_errors = ["a","b","k","RMSE","Rsquared"]
     if len(popt)>2:
-        contents = coefs_and_errors
         line_y = siqueira( np.linspace( df[x_column].min(), df[x_column].max(), num=1000 ), *popt )
         values = [ round(popt[0], 4), round(popt[1], 4), round(popt[2], 4), round(RMSE, 4), round(Rsquared, 4) ]
     else:
-        contents = coefs_and_errors[1:]
         line_y = special_siqueira( np.linspace(df[x_column].min(),df[x_column].max(), num=1000 ), *popt )
-        values = [ round(popt[0], 4), round(popt[1], 4), round(RMSE, 4), round(Rsquared, 4) ]
+        values = [ 0.0, round(popt[0], 4), round(popt[1], 4), round(RMSE, 4), round(Rsquared, 4) ]
 
     #df for plotting results in dash
     df_line = pd.DataFrame({
@@ -73,7 +71,7 @@ def siqueira_fit(df, x_column, y_column):
     
     #table of contents
     df_results = pd.DataFrame({
-                "Coeficientes e Erros": contents,
+                "Coeficientes e Erros": coefs_and_errors,
                 "Valores": values
                 }) 
 
